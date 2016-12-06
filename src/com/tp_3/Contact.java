@@ -97,7 +97,7 @@ public class Contact {
 
     public void ajouterTelephone(Telephone tel){
         if(tel != null){
-            for (int i = 0 ; i < this.telephones.length ; i++) {
+            for (int i = 0; i < this.telephones.length; i++) {
                 if(this.telephones[i]==null){
                     this.telephones[i] = tel;
                 }
@@ -108,14 +108,34 @@ public class Contact {
             }
         }
     }
-
-
-    public static Telephone[] doublerTableau (Telephone[] tab) {
+    public Telephone[] doublerTableau (Telephone[] tab) {
         Telephone [] tabCopy = new Telephone [tab.length+2];
         for (int i = 0 ; i < tab.length ; i++) {
             tabCopy[i] = tab[i];
         }
         return tabCopy;
+    }
+
+    public Telephone obtenirIemeTelephone(int ieme){
+        Telephone t = null;
+        ieme = ieme-1;
+        if(this.telephones.length>0 && ieme>=0){
+            int numOfElements = 0;
+            for (int i=0; i<this.telephones.length; i++)
+                if (this.telephones[i] != null)
+                    numOfElements++;
+
+//new array of non null elements
+            Telephone[] myNewArray = new Telephone[numOfElements];
+            for (int i=0,j=0; i<this.telephones.length; i++)
+                if (this.telephones[i] != null)
+                    myNewArray[j++] = this.telephones[i];
+
+            if(ieme<=myNewArray.length-1){
+                t = myNewArray[ieme];
+            }
+        }
+        return t;
     }
 
 
@@ -128,8 +148,6 @@ public class Contact {
     private void println(Object m){
         System.out.println(m);
     }
-
-
 
 
 

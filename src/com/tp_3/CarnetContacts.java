@@ -433,6 +433,16 @@ public class CarnetContacts {
     */
    public static void main (String [] args) {
 
+       try{
+           Contact c = new Contact("David", "Boutet", new Telephone("5146030902"), new Adresse(), "davidboutet@hotmail.com" );
+           System.out.println(c.obtenirIemeTelephone(1));
+
+       }catch (Exception e){
+           System.out.println(e);
+       }
+
+       System.exit(0);
+
       //nombre de contacts dans le tableau de contacts
       int nbrContacts = lireFichierNbrContacts(FIC_CONTACTS);
       
