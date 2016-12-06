@@ -31,6 +31,8 @@ public class Contact {
 
     public Contact(String nom, String prenom, Telephone tel, Adresse adresse, String courriel) throws ContactInvalideException{
         this(nom, prenom);
+        this.adresse = adresse;
+
         if(tel != null){
             this.telephones[0] = tel;
             this.nbrTelephones = this.nbrTelephones+1;
@@ -38,8 +40,6 @@ public class Contact {
         if(!checkNullorEmpty(courriel)){
             this.courriel = courriel;
         }
-
-
     }
 
     @Override
