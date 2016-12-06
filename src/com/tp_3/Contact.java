@@ -21,13 +21,24 @@ public class Contact {
 
     }
 
-    public Contact(String nom, String prenom){
+    public Contact(String nom, String prenom) throws ContactInvalideException{
+        if(checkNullorEmpty(nom) && checkNullorEmpty(prenom)){
+            throw new ContactInvalideException("Le nom et le prenom ne doivent pas etre null ou vide.");
+        }
         this.nom = nom;
         this.prenom = prenom;
     }
 
-    public Contact(String nom, String prenom, Telephone tel, Adresse adresse, String courriel){
+    public Contact(String nom, String prenom, Telephone tel, Adresse adresse, String courriel) throws ContactInvalideException{
         this(nom, prenom);
+        if(tel != null){
+            this.telephones[0] = tel;
+            this.nbrTelephones = this.nbrTelephones+1;
+        }
+        if(!checkNullorEmpty(courriel)){
+            this.courriel = courriel;
+        }
+
 
     }
 
@@ -57,21 +68,68 @@ public class Contact {
     }
 
 //    setter
-    public void setNom(String nom){
+    public void setNom(String nom) throws ContactInvalideException{
+        if(checkNullorEmpty(nom)){
+            throw new ContactInvalideException("Le nom ne peut être null ou vide.");
+        }
         this.nom = nom;
     }
-    public void setPrenom(String prenom){
+    public void setPrenom(String prenom)throws ContactInvalideException{
+        if(checkNullorEmpty(prenom)){
+            throw new ContactInvalideException("Le prénom ne peut être null ou vide.");
+        }
         this.prenom = prenom;
     }
     public void setAdresse(Adresse adresse){
         this.adresse = adresse;
     }
     public void setCourriel(String courriel){
+        if(checkNullorEmpty(courriel)){
+            this.courriel = null;
+        }
         this.courriel = courriel;
     }
     public void setFavori(Boolean favori){
         this.favori = favori;
+        this.nbrContactsFavoris = this.nbrContactsFavoris+1;
     }
+
+
+    public void ajouterTelephone(Telephone tel){
+        if(tel != null){
+            for (int i = 0 ; i < this.telephones.length ; i++) {
+                if(this.telephones[i]==null){
+                    this.telephones[i] = tel;
+                }
+                //array full and last index not null(add 2 null to array)
+                if ((i==this.telephones.length-1) && (this.telephones[i]!=null)){
+                    this.telephones = doublerTableau(this.telephones);
+                }
+            }
+        }
+    }
+
+
+    public static Telephone[] doublerTableau (Telephone[] tab) {
+        Telephone [] tabCopy = new Telephone [tab.length+2];
+        for (int i = 0 ; i < tab.length ; i++) {
+            tabCopy[i] = tab[i];
+        }
+        return tabCopy;
+    }
+
+
+
+
+//    private methode
+    private static Boolean checkNullorEmpty(String s){
+        return s.isEmpty();
+    }
+    private void println(Object m){
+        System.out.println(m);
+    }
+
+
 
 
 
