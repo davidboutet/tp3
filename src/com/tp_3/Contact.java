@@ -23,7 +23,7 @@ public class Contact {
 
     public Contact(String nom, String prenom) throws ContactInvalideException{
         if(checkNullorEmpty(nom) && checkNullorEmpty(prenom)){
-            throw new ContactInvalideException("Le nom et le prenom ne doivent pas etre null ou vide.");
+            throw new ContactInvalideException("Le nom et le prénom ne doivent pas être null ou vide.");
         }
         this.nom = nom;
         this.prenom = prenom;
