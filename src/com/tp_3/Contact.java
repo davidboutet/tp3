@@ -125,7 +125,7 @@ public class Contact {
                 if (this.telephones[i] != null)
                     numOfElements++;
 
-//new array of non null elements
+            //new array of non null elements
             Telephone[] myNewArray = new Telephone[numOfElements];
             for (int i=0,j=0; i<this.telephones.length; i++)
                 if (this.telephones[i] != null)
@@ -137,7 +137,38 @@ public class Contact {
         }
         return t;
     }
-
+    
+    /**
+     * Cette méthode permet de supprimer le ième téléphone du tableau de 
+     * téléphones de ce contact.
+     * @param ieme le téléphone à supprimer du tableau de téléphones du contact
+     * @return true si la suppression a eu lieu, false sinon. 
+     */
+    public boolean supprimerTelephone(int ieme){
+        boolean s = false;
+        Telephone TelSup = obtenirIemeTelephone(ieme);
+        int taille = 0;
+        
+        if(TelSup == null){
+            s = false;
+        } else{
+            for(int i = 0; i < this.telephones.length; i++){
+                if(this.telephones[i] != TelSup){
+                    taille++;
+                }
+            }
+            
+            //nouveau tableau sans le ieme telephone
+            Telephone[] tabTelSup = new Telephone[taille];
+            for(int j = 0; j < this.telephones.length; j++){
+                if(this.telephones[j] != TelSup){
+                    tabTelSup[j] = this.telephones[j]; 
+                }
+            }
+            s = true;
+        }
+        return s;
+    }
 
 
 
