@@ -106,6 +106,7 @@ public class Contact {
                     this.telephones = doublerTableau(this.telephones);
                 }
             }
+            nbrTelephones++;
         }
     }
     public Telephone[] doublerTableau (Telephone[] tab) {
@@ -169,7 +170,22 @@ public class Contact {
         }
         return s;
     }
-
+    
+    public void modifierTelephone(int ieme, String type, String numero, 
+            String poste){
+        
+        Telephone tel = obtenirIemeTelephone(ieme);
+        if(tel == null){
+            this.telephones = this.telephones;
+        } else{
+            for(int i = 0; i < this.telephones.length; i++){
+                if(type == null || numero == null || poste == null){
+                    this.telephones
+                }
+            }
+        
+        }
+    }
 
 
 //    private methode
