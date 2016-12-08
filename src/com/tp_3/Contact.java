@@ -42,10 +42,10 @@ public class Contact {
         }
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return super.toString();
-    }
+    }*/
 
 //      getter
     public String getNom(){
@@ -175,18 +175,40 @@ public class Contact {
             String poste){
         
         Telephone tel = obtenirIemeTelephone(ieme);
-        if(tel == null){
-            this.telephones = this.telephones;
-        } else{
-            for(int i = 0; i < this.telephones.length; i++){
-                if(type == null || numero == null || poste == null){
-                    this.telephones
-                }
-            }
         
-        }
+        
     }
-
+     
+    public String toString() {
+        String strContact;
+        Adresse adr  = new Adresse();
+        strContact = nom.toUpperCase() + prenom;
+        
+        if(favori==false){
+            strContact+= "";
+        } else{
+            strContact+= "[FAVORI]";
+        }
+        if(telephones == null){
+            strContact += "TELEPHONE(S) : Aucun.";
+        } else{
+            strContact += "TELEPHONE(S) : " + telephones.toString();
+        }
+        if(adr==null){
+            strContact += "ADRESSE : Aucune.";
+        } else{
+            strContact += "ADRESSE : " + adr.toString();
+        }
+        if(courriel==null){
+            strContact += "COURRIEL : Aucun.";
+        } else{
+            strContact += "COURRIEL : " + courriel;
+        }
+        
+        
+        
+        return strContact;
+    }
 
 //    private methode
     private static Boolean checkNullorEmpty(String s){
