@@ -403,10 +403,95 @@ public class CarnetContacts {
    //-----------------------------
    
    public static Contact[] ajouterContact (Contact [] contacts) {
-      
+      System.out.println(boiteTitre('*', "AJOUT D'UN CONTACT"));
+      String nom = validerChaine("Nom du contact:", "Erreur, le nom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
+      String prenom = validerChaine("Prénom du contact:", "Erreur, le prénom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
+      try{
+          Contact c = new Contact(nom, prenom);
+          Boolean reponseTelephone = true;
+          do{
+              reponseTelephone = questionOuiNon("Voulez-vous entrez un telephone (o/n) :", "Erreur, repondez par (o)ui ou (n)on !");
+              if(reponseTelephone){
+                  System.out.print("Type de telephone (Tapez ENTER pour \"Domicile\")");
+                  String typeTelephone = Clavier.lireString();
+
+                  Boolean b;
+                  System.out.print("Numero de telephone:");
+                  String numeroTelephone = Clavier.lireString();
+                  b = Telephone.numeroTelValide(numeroTelephone);
+                  while (!b){
+                      System.out.println("Erreur, le numero doit contenir exactement 7 ou 10 chiffres... Recommencez.");
+                      System.out.print("Numero de telephone:");
+                      numeroTelephone = Clavier.lireString();
+                      b = Telephone.numeroTelValide(numeroTelephone);
+                  }
+
+                  System.out.print("Poste telephonique (Tapez ENTER si aucun poste) : ");
+                  String poste = Clavier.lireString();
+                  Telephone t = new Telephone(typeTelephone, numeroTelephone, poste);
+                  c.ajouterTelephone(t);
+              }
+          }while(reponseTelephone);
+
+
+          Boolean reponseAdresse = questionOuiNon("Voulez-vous entrez une adresse (o/n) :", "Erreur, repondez par (o)ui ou (n)on !");
+          if(reponseAdresse){
+              String noPorte = validerChaine("No de porte : ", "Erreur, le numero de porte doit contenir entre 1 et 8 caracteres... Recommencez.", 1, 8);
+              String nomRue = validerChaine("Rue : ", "Erreur, le nom de la rue doit contenir entre 1 et 50 caracteres... Recommencez.", 1, 50);
+              System.out.print("Numero d'appartement (Taper ENTER si aucun apt.) : ");
+              String numeroAppartement = Clavier.lireString();
+              String nomVille = validerChaine("Ville : ", "Erreur, le nom de la ville doit contenir entre 1 et 50 caracteres... Recommencez.", 1, 50);
+              String province = validerChaine("Province/état: ", "Erreur, le nom de la province/etat doit contenir entre 1 et 50 caracteres... Recommencez.", 1, 50);
+              String pays = validerChaine("Pays: ", "Erreur, le nom du pays doit contenir entre 1 et 50 caracteres... Recommencez.", 1, 50);
+              System.out.print("Code postal (Taper ENTER si aucun code postal) : ");
+              String codePostal = Clavier.lireString();
+              Adresse a = new Adresse(noPorte, nomRue, numeroAppartement, nomVille, province, pays, codePostal);
+              c.setAdresse(a);
+          }
+          Boolean reponseCourriel = questionOuiNon("Voulez-vous entrez un courriel (o/n) :", "Erreur, repondez par (o)ui ou (n)on !");
+          if(reponseCourriel){
+              String courriel = validerChaine("Courriel: ", "Erreur, le courriel doit contenir entre 5 et 100 caracteres... Recommencez.", 5, 100);
+              c.setCourriel(courriel);
+          }
+          Boolean reponseFavori = questionOuiNon("Voulez-vous ajouter ce contact à vos favoris (o/n) :", "Erreur, repondez par (o)ui ou (n)on !");
+          if(reponseFavori){
+              c.setFavori(true);
+          }
+
+          Boolean b = false;
+          if(c != null){
+              for (int i = 0; i < contacts.length; i++) {
+                  if((contacts[i]==null || i==contacts.length-1) && !b){
+                      contacts[i] = c;
+                      b=true;
+                  }
+              }
+          }
+          if(b){
+              contacts = doublerTableau(contacts);
+          }
+
+      }catch (ContactInvalideException e){
+          System.out.println(e.getMessage());
+      }catch (TelephoneInvalideException e){
+          System.out.println(e.getMessage());
+      }catch (AdresseInvalideException e){
+          System.out.println(e.getMessage());
+      }
+
+       System.out.println(contacts[0]);
+
       //A COMPLETER
-      return null; //pour compilation seulement... a enlever.
+      return contacts; //pour compilation seulement... a enlever.
    }
+
+    private static Contact[] doublerTableau (Contact[] tab) {
+        Contact [] tabCopy = new Contact [tab.length+2];
+        for (int i = 0 ; i < tab.length ; i++) {
+            tabCopy[i] = tab[i];
+        }
+        return tabCopy;
+    }
    
    public static int supprimerContact(Contact[] contacts) {
       
@@ -432,28 +517,13 @@ public class CarnetContacts {
     * @param args (aucun)
     */
    public static void main (String [] args) {
-
-//       try{
-//           Contact c = new Contact("David", "Boutet", new Telephone("5146030902"), new Adresse(), "davidboutet@hotmail.com" );
-//           c.ajouterTelephone(new Telephone("1234567890"));
-
-
-
-//           System.out.println(c.obtenirIemeTelephone(1));
-
-
-//       }catch (Exception e){
-//           System.out.println(e);
-//       }
-//
-//       System.exit(0);
-
       //nombre de contacts dans le tableau de contacts
       int nbrContacts = lireFichierNbrContacts(FIC_CONTACTS);
       
       //tableau de contacts
       Contact [] contacts = lireFichierContacts(FIC_CONTACTS, nbrContacts);
-      
+
+
       //Choix au menu principal
       String choix;
 
@@ -466,6 +536,9 @@ public class CarnetContacts {
          switch (choix) {
             case "1" : 
                contacts = ajouterContact(contacts);
+               for(int i = 0; i<contacts.length; i++){
+                   System.out.println(contacts[i]);
+               }
                nbrContacts++;
                break;
                
