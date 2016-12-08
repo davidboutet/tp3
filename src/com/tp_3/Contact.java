@@ -1,11 +1,12 @@
 package com.tp_3;
 
 /**
- * Created by DavidBoutet on 16-12-01.
+ * Created by DavidBoutet(BOUD31109107) on 16-12-01.
+ * Created by Adrien Lombard(LOMA28049707) on 16-12-01.
  */
 public class Contact {
 //    attribut de classe
-    private static int nbrContactsFavoris = 0;
+    public static int nbrContactsFavoris = 0;
 
 //    attribut d'instance
     private String nom;
@@ -42,10 +43,40 @@ public class Contact {
         }
     }
 
-    /*@Override
+    @Override
     public String toString() {
-        return super.toString();
-    }*/
+        String strContact;
+        strContact = nom.toUpperCase( )+", "+ prenom;
+
+        if(this.favori){
+            strContact+= " [FAVORI]\n\n";
+        }else{
+            strContact +=  "\n\n";
+        }
+
+        Telephone[] tableauTelephone = obtenirTelephone();
+        if(this.telephones.length>0){
+            strContact += "TELEPHONE(S) : \n";
+            for(int i = 0; i<tableauTelephone.length; i++){
+                strContact+= (i+1)+ ". " + tableauTelephone[i]+"\n";
+            }
+            strContact+="\n";
+        }else{
+            strContact += "TELEPHONE(S) : Aucun.\n\n";
+        }
+        if(this.adresse==null){
+            strContact += "ADRESSE : Aucune.\n";
+        } else{
+            strContact += "ADRESSE : \n" + this.adresse+"\n\n";
+        }
+        if(this.courriel==null){
+            strContact += "COURRIEL : Aucun.\n";
+        } else{
+            strContact += "COURRIEL : " + this.courriel+"\n";
+        }
+        return strContact;
+    }
+
 
 //      getter
     public String getNom(){
@@ -94,19 +125,19 @@ public class Contact {
         this.nbrContactsFavoris = this.nbrContactsFavoris+1;
     }
 
-
     public void ajouterTelephone(Telephone tel){
+        Boolean b = false;
         if(tel != null){
             for (int i = 0; i < this.telephones.length; i++) {
-                if(this.telephones[i]==null){
+                if((this.telephones[i]==null || i==this.telephones.length-1) && !b){
                     this.telephones[i] = tel;
-                }
-                //array full and last index not null(add 2 null to array)
-                if ((i==this.telephones.length-1) && (this.telephones[i]!=null)){
-                    this.telephones = doublerTableau(this.telephones);
+                    b=true;
                 }
             }
             nbrTelephones++;
+        }
+        if(b){
+            this.telephones = doublerTableau(this.telephones);
         }
     }
     public Telephone[] doublerTableau (Telephone[] tab) {
@@ -140,29 +171,26 @@ public class Contact {
     }
     
     /**
-     * Cette méthode permet de supprimer le ième téléphone du tableau de 
-     * téléphones de ce contact.
-     * @param ieme le téléphone à supprimer du tableau de téléphones du contact
+     * Cette mï¿½thode permet de supprimer le iï¿½me tï¿½lï¿½phone du tableau de 
+     * tï¿½lï¿½phones de ce contact.
+     * @param ieme le tï¿½lï¿½phone ï¿½ supprimer du tableau de tï¿½lï¿½phones du contact
      * @return true si la suppression a eu lieu, false sinon. 
      */
     public boolean supprimerTelephone(int ieme){
         boolean s = false;
-        Telephone TelSup = obtenirIemeTelephone(ieme);
+        Telephone telSup = obtenirIemeTelephone(ieme);
         int taille = 0;
         
-        if(TelSup == null){
-            s = false;
-        } else{
+        if(telSup != null){
             for(int i = 0; i < this.telephones.length; i++){
-                if(this.telephones[i] != TelSup){
+                if(this.telephones[i] != telSup){
                     taille++;
                 }
             }
-            
             //nouveau tableau sans le ieme telephone
             Telephone[] tabTelSup = new Telephone[taille];
             for(int j = 0; j < this.telephones.length; j++){
-                if(this.telephones[j] != TelSup){
+                if(this.telephones[j] != telSup){
                     tabTelSup[j] = this.telephones[j]; 
                 }
             }
@@ -171,43 +199,30 @@ public class Contact {
         return s;
     }
     
-    public void modifierTelephone(int ieme, String type, String numero, 
-            String poste){
-        
+    public void modifierTelephone(int ieme, String type, String numero, String poste) throws ContactInvalideException{
         Telephone tel = obtenirIemeTelephone(ieme);
-        
-        
+        if (tel!=null){
+            if(!type.isEmpty()){
+                tel.setType(type);
+            }
+            if(!numero.isEmpty()){
+                try{
+                    tel.setNumero(numero);
+                }catch (TelephoneInvalideException e){
+                    throw new ContactInvalideException("Numero invalide.");
+                }
+            }
+            if(!poste.isEmpty()){
+                tel.setPoste(poste);
+            }
+        }
     }
-     
-    public String toString() {
-        String strContact;
-        Adresse adr  = new Adresse();
-        strContact = nom.toUpperCase() + prenom;
-        
-        if(favori==false){
-            strContact+= "";
-        } else{
-            strContact+= "[FAVORI]";
-        }
-        if(telephones == null){
-            strContact += "TELEPHONE(S) : Aucun.";
-        } else{
-            strContact += "TELEPHONE(S) : " + telephones.toString();
-        }
-        if(adr==null){
-            strContact += "ADRESSE : Aucune.";
-        } else{
-            strContact += "ADRESSE : " + adr.toString();
-        }
-        if(courriel==null){
-            strContact += "COURRIEL : Aucun.";
-        } else{
-            strContact += "COURRIEL : " + courriel;
-        }
-        
-        
-        
-        return strContact;
+
+    public void modifierNbrContactsFavoris(int nbr){
+        this.nbrContactsFavoris = nbr;
+    }
+    public int obtenirNbrContactsFavoris(){
+        return this.obtenirNbrContactsFavoris();
     }
 
 //    private methode
@@ -217,19 +232,21 @@ public class Contact {
     private void println(Object m){
         System.out.println(m);
     }
+    private Telephone[] obtenirTelephone(){
+        Telephone[] myNewArray = {null};
+        if(this.telephones.length>0){
+            int numOfElements = 0;
+            for (int i=0; i<this.telephones.length; i++)
+                if (this.telephones[i] != null)
+                    numOfElements++;
 
+            //new array of non null elements
+            myNewArray = new Telephone[numOfElements];
+            for (int i=0,j=0; i<this.telephones.length; i++)
+                if (this.telephones[i] != null)
+                    myNewArray[j++] = this.telephones[i];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
+        return myNewArray;
+    }
 }
