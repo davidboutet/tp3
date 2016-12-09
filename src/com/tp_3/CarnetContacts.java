@@ -65,10 +65,10 @@ public class CarnetContacts {
          try {
             in = new BufferedReader(new FileReader(ficContacts));
             nbr = Integer.parseInt(in.readLine().trim());
-            in.close(); 
+            in.close();
          } catch (IOException e) {
             //ne se produira pas
-         } 
+         }
       }
       return nbr;
    }
@@ -398,13 +398,13 @@ public class CarnetContacts {
    
 
    //-----------------------------
-   //MÉTHODES À COMPLÉTER
+   //Mï¿½THODES ï¿½ COMPLï¿½TER
    //-----------------------------
    
     public static Contact[] ajouterContact (Contact [] contacts) {
         System.out.println(boiteTitre('*', "AJOUT D'UN CONTACT"));
         String nom = validerChaine("Nom du contact : ", "Erreur, le nom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
-        String prenom = validerChaine("Prénom du contact : ", "Erreur, le prénom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
+        String prenom = validerChaine("PrÃ©nom du contact : ", "Erreur, le prÃ©nom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
         try{
             Contact c = new Contact(nom, prenom);
             Boolean reponseTelephone = true;
@@ -440,7 +440,7 @@ public class CarnetContacts {
                 System.out.print("Numero d'appartement (Taper ENTER si aucun apt.) : ");
                 String numeroAppartement = Clavier.lireString();
                 String nomVille = validerChaine("Ville : ", "Erreur, le nom de la ville doit contenir entre 1 et 50 caracteres... Recommencez.", 1, 50);
-                String province = validerChaine("Province/état : ", "Erreur, le nom de la province/etat doit contenir entre 1 et 50 caracteres... Recommencez.", 1, 50);
+                String province = validerChaine("Province/Ã©tat : ", "Erreur, le nom de la province/etat doit contenir entre 1 et 50 caracteres... Recommencez.", 1, 50);
                 String pays = validerChaine("Pays : ", "Erreur, le nom du pays doit contenir entre 1 et 50 caracteres... Recommencez.", 1, 50);
                 System.out.print("Code postal (Taper ENTER si aucun code postal) : ");
                 String codePostal = Clavier.lireString();
@@ -452,7 +452,7 @@ public class CarnetContacts {
                 String courriel = validerChaine("Courriel : ", "Erreur, le courriel doit contenir entre 5 et 100 caracteres... Recommencez.", 5, 100);
                 c.setCourriel(courriel);
             }
-            Boolean reponseFavori = questionOuiNon("Voulez-vous ajouter ce contact à vos favoris (o/n) : ", "Erreur, repondez par (o)ui ou (n)on !");
+            Boolean reponseFavori = questionOuiNon("Voulez-vous ajouter ce contact Ã  vos favoris (o/n) : ", "Erreur, repondez par (o)ui ou (n)on !");
             if(reponseFavori){
                 c.setFavori(true);
             }
@@ -492,19 +492,55 @@ public class CarnetContacts {
     }
    
     public static int supprimerContact(Contact[] contacts) {
-      
-      //A COMPLETER
-        return 0; //pour compilation seulement... a enlever.
+        Contact [] contactTrouver = {null};
+        int tabIndex = 0;
+        boiteTitre('*', "SUPPRIMER UN CONTACT");
+        String nomContact = validerChaine("Nom du contact : ", "Erreur, le nom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
+        String prenomContact = validerChaine("PrÃ©nom du contact : ", "Erreur, le prÃ©nom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
+
+        for(int i = 0; i<contacts.length; i++){
+            if(contacts[i]!=null){
+                if(contacts[i].getNom().equals(nomContact)&&contacts[i].getPrenom().equals(prenomContact)){
+                    if(contactTrouver[tabIndex]==null){
+                        contactTrouver[tabIndex] = contacts[i];
+                        contactTrouver = doublerTableau(contactTrouver);
+                    }
+                    tabIndex++;
+                }
+            }
+        }
+        if(tabIndex==0){
+            System.out.print("Le carnet ne contient aucun contact portant le nom : " + prenomContact.toUpperCase() + " " + nomContact.toUpperCase());
+        }else{
+            for(int i = 0; i<contactTrouver.length; i++){
+                if(contactTrouver[i]!=null){
+                    System.out.println(contactTrouver[i]);
+                    if(questionOuiNon("Voulez-vous vraiment supprimer ce contact (o/n) : ", "Erreur, repondez par (o)ui ou (n)on !")){
+                        for(int z = 0; z<contacts.length; z++){
+                            if(contacts[z]!=null){
+                                if(contacts[z].getNom().equals(contactTrouver[i].getNom()) && contacts[z].getPrenom().equals(contactTrouver[i].getPrenom())){
+                                    contacts[z] = null;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return tabIndex;
    }
+
    
     public static boolean viderCarnet(Contact[] contacts) {
-      
-      //A COMPLETER
-        return true; //pour compilation seulement... a enlever.
+        Boolean hasBeenClear = false;
+        if(questionOuiNon("Voulez-vous vraiment effacer tous les contacts (o/n) :", "Erreur, repondez par (o)ui ou (n)on !" )){
+            contacts = new Contact[] {null, null};
+            hasBeenClear = true;
+        }
+        return hasBeenClear;
    }
    
     public static void afficherContacts (Contact [] contacts, int nbrContacts) {
-
         String choix;
         String nom;
         String prenom;
@@ -522,7 +558,7 @@ public class CarnetContacts {
                     System.out.println("\nCARNET DE CONTACTS (" + nbrContacts + ")\n\n");
                     for(int i = 0; i < contacts.length; i++){
                         if(contacts[i] != null){
-                            if(contacts[i].isFavori() == true){
+                            if(contacts[i].isFavori()){
                                 tailleNomPre += 9;
                             }
                             tailleNomPre += contacts[i].getNom().length() + contacts[i].getPrenom().length() + 2;
@@ -534,8 +570,7 @@ public class CarnetContacts {
                             System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
                             tailleNomPre = 0;
                             pause(MSG_PAUSE);
-                        }
-                        else{
+                        }else{
                             tabVide = true;
                         }
                     }
@@ -550,7 +585,7 @@ public class CarnetContacts {
                             + "2... Recommencez.\n");
             }
 
-        }while(!tabVide==true);
+        }while(!tabVide);
     }
    /**
     * Point d'entree de l'application de gestion d'un carnet de contacts 
@@ -577,9 +612,6 @@ public class CarnetContacts {
          switch (choix) {
             case "1" : 
                contacts = ajouterContact(contacts);
-               for(int i = 0; i<contacts.length; i++){
-                   System.out.println(contacts[i]);
-               }
                nbrContacts++;
                break;
                
