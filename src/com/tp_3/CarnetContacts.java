@@ -400,7 +400,11 @@ public class CarnetContacts {
    //-----------------------------
    //M�THODES � COMPL�TER
    //-----------------------------
-   
+
+    /** Cette méthode permet d'ajouter un contact avec les informations saisi par l'utilisateur
+     * @param contacts le tableau de contacts représentant le carnet de contacts
+     * @return le tableau de contacts dans lequel on a ajouté le nouveau contact
+     */
     public static Contact[] ajouterContact (Contact [] contacts) {
         System.out.println(boiteTitre('*', "AJOUT D'UN CONTACT"));
         String nom = validerChaine("Nom du contact : ", "Erreur, le nom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
@@ -477,12 +481,14 @@ public class CarnetContacts {
         }catch (AdresseInvalideException e){
             System.out.println(e.getMessage());
         }
-
-
-        //A COMPLETER
         return contacts; //pour compilation seulement... a enlever.
     }
 
+    /**
+     * Cette méthode permet de doubler le tableau de contacts
+     * @param tab le tableau de contacts représentant le carnet de contacts
+     * @return le tableau doublé
+     */
     private static Contact[] doublerTableau (Contact[] tab) {
         Contact [] tabCopy = new Contact [tab.length+2];
         for (int i = 0 ; i < tab.length ; i++) {
@@ -490,7 +496,12 @@ public class CarnetContacts {
         }
         return tabCopy;
     }
-   
+
+    /**
+     * Cette méthode permet de supprimer un contact saisi par l'utilisateur
+     * @param contacts le tableau de contacts représentant le carnet de contacts
+     * @return le nombre de contact(s) effectivement supprimés
+     */
     public static int supprimerContact(Contact[] contacts) {
         Contact [] contactTrouver = {null};
         int tabIndex = 0;
@@ -515,6 +526,9 @@ public class CarnetContacts {
             for(int i = 0; i<contactTrouver.length; i++){
                 if(contactTrouver[i]!=null){
                     System.out.println(contactTrouver[i]);
+                    if(contactTrouver[i].isFavori() == true){
+                        Contact.nbrContactsFavoris = Contact.nbrContactsFavoris -1;
+                    }
                     if(questionOuiNon("Voulez-vous vraiment supprimer ce contact (o/n) : ", "Erreur, repondez par (o)ui ou (n)on !")){
                         for(int z = 0; z<contacts.length; z++){
                             if(contacts[z]!=null){
@@ -530,16 +544,27 @@ public class CarnetContacts {
         return tabIndex;
    }
 
-   
+
+    /**
+     * Cette méthode permet de  vider le carnet de contacts
+     * @param contacts le tableau de contacts représentant le carnet de contacts
+     * @return true si l’utilisateur a confirmé la suppression de tous les contacts, false sinon
+     */
     public static boolean viderCarnet(Contact[] contacts) {
         Boolean hasBeenClear = false;
         if(questionOuiNon("Voulez-vous vraiment effacer tous les contacts (o/n) :", "Erreur, repondez par (o)ui ou (n)on !" )){
             contacts = new Contact[] {null, null};
+            Contact.nbrContactsFavoris = 0;
             hasBeenClear = true;
         }
         return hasBeenClear;
    }
-   
+
+    /**
+     * Cette méthode permet de choisir entre afficher tout les contacts ou afficher seulement les contacts favoris
+     * @param contacts le tableau de contacts représentant le carnet de contacts
+     * @param nbrContacts le nombre total de contacts présents dans le carnet
+     */
     public static void afficherContacts (Contact [] contacts, int nbrContacts) {
         String choix;
         String nom;
