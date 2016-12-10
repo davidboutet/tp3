@@ -46,7 +46,7 @@ public class Contact {
     @Override
     public String toString() {
         String strContact;
-        strContact = nom.toUpperCase( )+", "+ prenom;
+        strContact = nom.toUpperCase()+", "+ prenom.substring(0,1).toUpperCase() + prenom.substring(1);
 
         if(this.favori){
             strContact+= " [FAVORI]\n\n";
@@ -62,12 +62,12 @@ public class Contact {
             }
             strContact+="\n";
         }else{
-            strContact += "TELEPHONE(S) : Aucun.\n\n";
+            strContact += "TELEPHONE(S) : Aucun.\n";
         }
         if(this.adresse==null){
             strContact += "ADRESSE : Aucune.\n";
         } else{
-            strContact += "ADRESSE : \n" + this.adresse+"\n\n";
+            strContact += "ADRESSE : \n" + this.adresse +"\n\n";
         }
         if(this.courriel==null){
             strContact += "COURRIEL : Aucun.\n";
@@ -125,6 +125,10 @@ public class Contact {
         this.nbrContactsFavoris = this.nbrContactsFavoris+1;
     }
 
+    /**
+     * Cette méthode permet d’ajouter le tel donné en paramètre au tableau telephones de ce contact.
+     * @param tel Le téléphone à ajouter au tableau de téléphones de ce contact.
+     */
     public void ajouterTelephone(Telephone tel){
         Boolean b = false;
         if(tel != null){
@@ -140,6 +144,12 @@ public class Contact {
             this.telephones = doublerTableau(this.telephones);
         }
     }
+
+    /**
+     * Cette méthode permet de doubler le tableau de téléphone si il est plein
+     * @param tab le tableau de téléphone
+     * @return le tableau doublé
+     */
     public Telephone[] doublerTableau (Telephone[] tab) {
         Telephone [] tabCopy = new Telephone [tab.length+2];
         for (int i = 0 ; i < tab.length ; i++) {
@@ -148,6 +158,11 @@ public class Contact {
         return tabCopy;
     }
 
+    /**
+     * Cette méthode permet d’obtenir le ième téléphone du tableau de téléphones de ce contact
+     * @param ieme  spécifie le téléphone du tableau de téléphones de ce contact à retourner
+     * @return le ième téléphone du tableau de téléphones de ce contact
+     */
     public Telephone obtenirIemeTelephone(int ieme){
         Telephone t = null;
         ieme = ieme-1;
@@ -171,9 +186,9 @@ public class Contact {
     }
     
     /**
-     * Cette m�thode permet de supprimer le i�me t�l�phone du tableau de 
-     * t�l�phones de ce contact.
-     * @param ieme le t�l�phone � supprimer du tableau de t�l�phones du contact
+     * Cette méthode permet de supprimer le ième téléphone du tableau de
+     * téléphones de ce contact.
+     * @param ieme le téléphone à supprimer du tableau de téléphones du contact
      * @return true si la suppression a eu lieu, false sinon. 
      */
     public boolean supprimerTelephone(int ieme){
@@ -198,7 +213,15 @@ public class Contact {
         }
         return s;
     }
-    
+
+    /**
+     * Cette méthode permet de modifier le type, le numero, et le poste du ième téléphone de ce contact
+     * @param ieme spécifie le téléphone à modifier dans le tableau de téléphones de ce contact
+     * @param type la nouvelle valeur pour le type du téléphone à supprimer
+     * @param numero la nouvelle valeur pour le numéro du téléphone à supprimer
+     * @param poste la nouvelle valeur pour le poste du téléphone à supprimer
+     * @throws ContactInvalideException si le paramètre numero n’est pas null, et n’est pas valide,
+     */
     public void modifierTelephone(int ieme, String type, String numero, String poste) throws ContactInvalideException{
         Telephone tel = obtenirIemeTelephone(ieme);
         if (tel!=null){
@@ -218,9 +241,18 @@ public class Contact {
         }
     }
 
+    /**
+     * Cette méthode permet de modifier la valeur de l’attribut de classe nbrContactsFavoris par la valeur passée en paramètre
+     * @param nbr la valeur de modification de l’attribut de classe nbrContactsFavoris
+     */
     public void modifierNbrContactsFavoris(int nbr){
         this.nbrContactsFavoris = nbr;
     }
+
+    /**
+     * Cette méthode ppermet d’obtenir la valeur de l’attribut de classe nbrContactsFavoris
+     * @return le nombre de contact favoris
+     */
     public int obtenirNbrContactsFavoris(){
         return this.obtenirNbrContactsFavoris();
     }
