@@ -554,31 +554,71 @@ public class CarnetContacts {
            choix = Clavier.lireString();
 
             switch (choix) {
-                case "1" : 
+                case "1" :
                     System.out.println("\nCARNET DE CONTACTS (" + nbrContacts + ")\n\n");
-                    for(int i = 0; i < contacts.length; i++){
-                        if(contacts[i] != null){
-                            if(contacts[i].isFavori()){
-                                tailleNomPre += 9;
+
+                    if(nbrContacts == 0) {
+                        System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
+                        pause(MSG_PAUSE);
+                        tabVide = true;
+                    } else {
+                        for (int i = 0; i < contacts.length; i++) {
+                            if (contacts[i] != null) {
+                                if (contacts[i].isFavori()) {
+                                    tailleNomPre += 9;
+                                }
+                                tailleNomPre += contacts[i].getNom().length() + contacts[i].getPrenom().length() + 2;
+                                nom = contacts[i].toString().substring(0, contacts[i].toString().indexOf(','));
+                                prenom = contacts[i].toString().substring(contacts[i].toString().indexOf(',') + 1, contacts[i].toString().indexOf("\n"));
+                                System.out.println(ligne('-', tailleNomPre));
+                                System.out.println(nom + "," + prenom);
+                                System.out.println(ligne('-', tailleNomPre));
+                                System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
+                                tailleNomPre = 0;
+
+                                if (contacts[i + 1] == null) {
+                                    System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
+                                    pause(MSG_PAUSE);
+                                } else {
+                                    pause(MSG_PAUSE);
+                                }
+                            } else {
+                                tabVide = true;
                             }
-                            tailleNomPre += contacts[i].getNom().length() + contacts[i].getPrenom().length() + 2;
-                            nom = contacts[i].toString().substring(0,contacts[i].toString().indexOf(',')); 
-                            prenom = contacts[i].toString().substring(contacts[i].toString().indexOf(',')+1,contacts[i].toString().indexOf("\n"));
-                            System.out.println(ligne('-',tailleNomPre));
-                            System.out.println(nom + "," + prenom);
-                            System.out.println(ligne('-',tailleNomPre));
-                            System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
-                            tailleNomPre = 0;
-                            pause(MSG_PAUSE);
-                        }else{
-                            tabVide = true;
+                        }
+                    }
+                break;
+                
+                case "2" :
+                    System.out.println("\nCARNET DE CONTACTS (" + Contact.nbrContactsFavoris + ")\n\n");
+                    if(Contact.nbrContactsFavoris == 0) {
+                        System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
+                        pause(MSG_PAUSE);
+                        tabVide = true;
+                    } else {
+                        for(int i = 0; i < contacts.length; i++){
+                            if(contacts[i] != null && contacts[i].isFavori() == true){
+                                tailleNomPre += contacts[i].getNom().length() + contacts[i].getPrenom().length() + 11;
+                                nom = contacts[i].toString().substring(0,contacts[i].toString().indexOf(','));
+                                prenom = contacts[i].toString().substring(contacts[i].toString().indexOf(',')+1,contacts[i].toString().indexOf("\n"));
+                                System.out.println(ligne('-',tailleNomPre));
+                                System.out.println(nom + "," + prenom);
+                                System.out.println(ligne('-',tailleNomPre));
+                                System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
+                                tailleNomPre = 0;
+
+                                if(contacts[i+1]==null){
+                                    System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
+                                    pause(MSG_PAUSE);
+                                } else {
+                                    pause(MSG_PAUSE);
+                                }
+                            }else {
+                                tabVide = true;
+                            }
                         }
                     }
                     break;
-                
-                case "2" :
-                    
-                break;
 
                 default : 
                     System.out.println("\nErreur, entrez une valeur entre 1 et"
