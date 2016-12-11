@@ -1,4 +1,5 @@
 package com.tp_3;
+import java.util.Arrays;
 
 /**
  * Created by DavidBoutet(BOUD31109107) on 16-12-01.
@@ -23,7 +24,7 @@ public class Contact {
     }
 
     public Contact(String nom, String prenom) throws ContactInvalideException{
-        if(checkNullorEmpty(nom) && checkNullorEmpty(prenom)){
+        if(isNullorEmpty(nom) || isNullorEmpty(prenom)){
             throw new ContactInvalideException("Le nom et le prénom ne doivent pas être null ou vide.");
         }
         this.nom = nom;
@@ -38,7 +39,7 @@ public class Contact {
             this.telephones[0] = tel;
             this.nbrTelephones = this.nbrTelephones+1;
         }
-        if(!checkNullorEmpty(courriel)){
+        if(!isNullorEmpty(courriel)){
             this.courriel = courriel;
         }
     }
@@ -76,6 +77,57 @@ public class Contact {
         }
         return strContact;
     }
+//***********************************************************************//
+//***********************************************************************//
+//    TOSTRING2 POUR LES TEST SEULEMENT A ENLEVER AVANT LA REMISE        //
+//***********************************************************************//
+//***********************************************************************//
+//    public String toString2 (String attribut) {
+//        String s = "";
+//        if (attribut == null) {
+//            String contact = nom + " " + prenom + " " + favori + "\n";
+//            if (telephones == null) {
+//                contact = contact + "erreur";
+//            } else {
+//                for (Telephone tel : telephones) {
+//                    contact = contact + tel + "\n";
+//                }
+//            }
+//            contact = contact + adresse;
+//            contact = contact + "\n" + courriel;
+//
+//            s = contact.trim();
+//        } else if (attribut.equals("nom")) {
+//            s = nom;
+//        } else if (attribut.equals("prenom")) {
+//            s = prenom;
+//        } else if (attribut.equals("adresse")) {
+//            s = "null";
+//            if (adresse != null) {
+//                s = adresse.toString();
+//            }
+//        } else if (attribut.equals("courriel")) {
+//            s = "null";
+//            if (courriel != null) {
+//                s = courriel;
+//            }
+//        } else if (attribut.equals("favori")) {
+//            s = favori + "";
+//        } else if (attribut.equals("nbrTelephones")) {
+//            s = nbrTelephones + "";
+//        } else if (attribut.equals("telephones")) {
+//            if (telephones == null) {
+//                s = "erreur";
+//            } else {
+//                s = "";
+//                for (Telephone tel : telephones) {
+//                    s = s + tel + "\n";
+//                }
+//                s = s.trim();
+//            }
+//        }
+//        return s;
+//    }
 
 
 //      getter
@@ -100,13 +152,13 @@ public class Contact {
 
 //    setter
     public void setNom(String nom) throws ContactInvalideException{
-        if(checkNullorEmpty(nom)){
+        if(isNullorEmpty(nom)){
             throw new ContactInvalideException("Le nom ne peut être null ou vide.");
         }
         this.nom = nom;
     }
     public void setPrenom(String prenom)throws ContactInvalideException{
-        if(checkNullorEmpty(prenom)){
+        if(isNullorEmpty(prenom)){
             throw new ContactInvalideException("Le prénom ne peut être null ou vide.");
         }
         this.prenom = prenom;
@@ -115,7 +167,7 @@ public class Contact {
         this.adresse = adresse;
     }
     public void setCourriel(String courriel){
-        if(checkNullorEmpty(courriel)){
+        if(isNullorEmpty(courriel)){
             this.courriel = null;
         }
         this.courriel = courriel;
@@ -130,32 +182,29 @@ public class Contact {
      * @param tel Le téléphone à ajouter au tableau de téléphones de ce contact.
      */
     public void ajouterTelephone(Telephone tel){
-        Boolean b = false;
+        Boolean hasBeenAdd = false;
         if(tel != null){
+            if(isArrayFull(this.telephones)){
+                this.telephones = ajouterLongueurTab(this.telephones, 2);
+            }
             for (int i = 0; i < this.telephones.length; i++) {
-                if((this.telephones[i]==null || i==this.telephones.length-1) && !b){
+                if(this.telephones[i]==null && !hasBeenAdd){
                     this.telephones[i] = tel;
-                    b=true;
+                    hasBeenAdd = true;
                 }
             }
             nbrTelephones++;
-        }
-        if(b){
-            this.telephones = doublerTableau(this.telephones);
         }
     }
 
     /**
      * Cette méthode permet de doubler le tableau de téléphone si il est plein
      * @param tab le tableau de téléphone
-     * @return le tableau doublé
+     * @param aAjouter longueur a ajouter au tableau
+     * @return le tableau + aJouter
      */
-    public Telephone[] doublerTableau (Telephone[] tab) {
-        Telephone [] tabCopy = new Telephone [tab.length+2];
-        for (int i = 0 ; i < tab.length ; i++) {
-            tabCopy[i] = tab[i];
-        }
-        return tabCopy;
+    public Telephone[] ajouterLongueurTab (Telephone[] tab, int aAjouter) {
+        return Arrays.copyOf(tab, tab.length + aAjouter);
     }
 
     /**
@@ -166,7 +215,7 @@ public class Contact {
     public Telephone obtenirIemeTelephone(int ieme){
         Telephone t = null;
         ieme = ieme-1;
-        if(this.telephones.length>0 && ieme>=0){
+        if(this.telephones.length>0 && ieme>=0 && ieme <= this.telephones.length-1){
             int numOfElements = 0;
             for (int i=0; i<this.telephones.length; i++)
                 if (this.telephones[i] != null)
@@ -225,17 +274,17 @@ public class Contact {
     public void modifierTelephone(int ieme, String type, String numero, String poste) throws ContactInvalideException{
         Telephone tel = obtenirIemeTelephone(ieme);
         if (tel!=null){
-            if(!type.isEmpty()){
+            if(!isNullorEmpty(type)){
                 tel.setType(type);
             }
-            if(!numero.isEmpty()){
+            if(!isNullorEmpty(numero)){
                 try{
                     tel.setNumero(numero);
                 }catch (TelephoneInvalideException e){
                     throw new ContactInvalideException("Numero invalide.");
                 }
             }
-            if(!poste.isEmpty()){
+            if(!isNullorEmpty(poste)){
                 tel.setPoste(poste);
             }
         }
@@ -245,21 +294,25 @@ public class Contact {
      * Cette méthode permet de modifier la valeur de l’attribut de classe nbrContactsFavoris par la valeur passée en paramètre
      * @param nbr la valeur de modification de l’attribut de classe nbrContactsFavoris
      */
-    public void modifierNbrContactsFavoris(int nbr){
-        this.nbrContactsFavoris = nbr;
+    public static void modifierNbrContactsFavoris(int nbr){
+        nbrContactsFavoris = nbr;
     }
 
     /**
      * Cette méthode ppermet d’obtenir la valeur de l’attribut de classe nbrContactsFavoris
      * @return le nombre de contact favoris
      */
-    public int obtenirNbrContactsFavoris(){
-        return this.obtenirNbrContactsFavoris();
+    public static int obtenirNbrContactsFavoris(){
+        return nbrContactsFavoris;
     }
 
 //    private methode
-    private static Boolean checkNullorEmpty(String s){
-        return s.isEmpty();
+    private Boolean isNullorEmpty(String s){
+        Boolean b = true;
+        if(s != null){
+            b = s.isEmpty();
+        }
+        return b;
     }
     private void println(Object m){
         System.out.println(m);
@@ -280,5 +333,15 @@ public class Contact {
 
         }
         return myNewArray;
+    }
+
+    private Boolean isArrayFull(Telephone[] tel){
+        Boolean b = true;
+        for (int i=0; i<=tel.length-1; i++) {
+            if (tel[i] == null) {
+                b = false;
+            }
+        }
+        return b;
     }
 }

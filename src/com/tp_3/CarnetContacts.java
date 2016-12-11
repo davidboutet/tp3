@@ -1,6 +1,7 @@
 package com.tp_3;
 
 import java.io.*;
+import java.util.Arrays;
 
 /**
  * A COMPLETER...
@@ -461,17 +462,20 @@ public class CarnetContacts {
                 c.setFavori(true);
             }
 
-            Boolean b = false;
+
+            System.out.print(contacts.length);
+            System.out.print("++++++++++++++++++++++++");
+            Boolean hasBeenAdd = false;
+            if(isArrayFull(contacts)){
+                contacts = ajouterLongueurTab(contacts, 2);
+            }
             if(c != null){
                 for (int i = 0; i < contacts.length; i++) {
-                    if((contacts[i]==null || i==contacts.length-1) && !b){
+                    if(contacts[i]==null && !hasBeenAdd){
                         contacts[i] = c;
-                        b=true;
+                        hasBeenAdd=true;
                     }
                 }
-            }
-            if(b){
-                contacts = doublerTableau(contacts);
             }
 
         }catch (ContactInvalideException e){
@@ -485,16 +489,23 @@ public class CarnetContacts {
     }
 
     /**
-     * Cette méthode permet de doubler le tableau de contacts
-     * @param tab le tableau de contacts représentant le carnet de contacts
-     * @return le tableau doublé
+     * Cette méthode permet de doubler le tableau de téléphone si il est plein
+     * @param tab le tableau de téléphone
+     * @param aAjouter longueur a ajouter au tableau
+     * @return le tableau + aJouter
      */
-    private static Contact[] doublerTableau (Contact[] tab) {
-        Contact [] tabCopy = new Contact [tab.length+2];
-        for (int i = 0 ; i < tab.length ; i++) {
-            tabCopy[i] = tab[i];
+    private static Contact[] ajouterLongueurTab (Contact[] tab, int aAjouter) {
+        return Arrays.copyOf(tab, tab.length + aAjouter);
+    }
+
+    private static Boolean isArrayFull(Contact[] contacts){
+        Boolean b = true;
+        for (int i=0; i<=contacts.length-1; i++) {
+            if (contacts[i] == null) {
+                b = false;
+            }
         }
-        return tabCopy;
+        return b;
     }
 
     /**
@@ -514,7 +525,7 @@ public class CarnetContacts {
                 if(contacts[i].getNom().equals(nomContact)&&contacts[i].getPrenom().equals(prenomContact)){
                     if(contactTrouver[tabIndex]==null){
                         contactTrouver[tabIndex] = contacts[i];
-                        contactTrouver = doublerTableau(contactTrouver);
+                        contactTrouver = ajouterLongueurTab(contactTrouver, 2);
                     }
                     tabIndex++;
                 }
@@ -526,7 +537,7 @@ public class CarnetContacts {
             for(int i = 0; i<contactTrouver.length; i++){
                 if(contactTrouver[i]!=null){
                     System.out.println(contactTrouver[i]);
-                    if(contactTrouver[i].isFavori() == true){
+                    if(contactTrouver[i].isFavori()){
                         Contact.nbrContactsFavoris = Contact.nbrContactsFavoris -1;
                     }
                     if(questionOuiNon("Voulez-vous vraiment supprimer ce contact (o/n) : ", "Erreur, repondez par (o)ui ou (n)on !")){
@@ -571,7 +582,6 @@ public class CarnetContacts {
         String prenom;
         int tailleNomPre = 0;
         boolean tabVide = false;
-        boolean favoris = false;
         System.out.println(boiteTitre('*', "AFFICHER LES CONTACTS"));
         
         do{
@@ -601,7 +611,7 @@ public class CarnetContacts {
                                 System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
                                 tailleNomPre = 0;
 
-                                if (contacts[i + 1] == null) {
+                                if (contacts[i] == null) {
                                     System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
                                     pause(MSG_PAUSE);
                                 } else {
