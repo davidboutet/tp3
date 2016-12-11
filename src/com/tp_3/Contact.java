@@ -82,52 +82,52 @@ public class Contact {
 //    TOSTRING2 POUR LES TEST SEULEMENT A ENLEVER AVANT LA REMISE        //
 //***********************************************************************//
 //***********************************************************************//
-//    public String toString2 (String attribut) {
-//        String s = "";
-//        if (attribut == null) {
-//            String contact = nom + " " + prenom + " " + favori + "\n";
-//            if (telephones == null) {
-//                contact = contact + "erreur";
-//            } else {
-//                for (Telephone tel : telephones) {
-//                    contact = contact + tel + "\n";
-//                }
-//            }
-//            contact = contact + adresse;
-//            contact = contact + "\n" + courriel;
-//
-//            s = contact.trim();
-//        } else if (attribut.equals("nom")) {
-//            s = nom;
-//        } else if (attribut.equals("prenom")) {
-//            s = prenom;
-//        } else if (attribut.equals("adresse")) {
-//            s = "null";
-//            if (adresse != null) {
-//                s = adresse.toString();
-//            }
-//        } else if (attribut.equals("courriel")) {
-//            s = "null";
-//            if (courriel != null) {
-//                s = courriel;
-//            }
-//        } else if (attribut.equals("favori")) {
-//            s = favori + "";
-//        } else if (attribut.equals("nbrTelephones")) {
-//            s = nbrTelephones + "";
-//        } else if (attribut.equals("telephones")) {
-//            if (telephones == null) {
-//                s = "erreur";
-//            } else {
-//                s = "";
-//                for (Telephone tel : telephones) {
-//                    s = s + tel + "\n";
-//                }
-//                s = s.trim();
-//            }
-//        }
-//        return s;
-//    }
+    public String toString2 (String attribut) {
+        String s = "";
+        if (attribut == null) {
+            String contact = nom + " " + prenom + " " + favori + "\n";
+            if (telephones == null) {
+                contact = contact + "erreur";
+            } else {
+                for (Telephone tel : telephones) {
+                    contact = contact + tel + "\n";
+                }
+            }
+            contact = contact + adresse;
+            contact = contact + "\n" + courriel;
+
+            s = contact.trim();
+        } else if (attribut.equals("nom")) {
+            s = nom;
+        } else if (attribut.equals("prenom")) {
+            s = prenom;
+        } else if (attribut.equals("adresse")) {
+            s = "null";
+            if (adresse != null) {
+                s = adresse.toString();
+            }
+        } else if (attribut.equals("courriel")) {
+            s = "null";
+            if (courriel != null) {
+                s = courriel;
+            }
+        } else if (attribut.equals("favori")) {
+            s = favori + "";
+        } else if (attribut.equals("nbrTelephones")) {
+            s = nbrTelephones + "";
+        } else if (attribut.equals("telephones")) {
+            if (telephones == null) {
+                s = "erreur";
+            } else {
+                s = "";
+                for (Telephone tel : telephones) {
+                    s = s + tel + "\n";
+                }
+                s = s.trim();
+            }
+        }
+        return s;
+    }
 
 
 //      getter
@@ -244,20 +244,22 @@ public class Contact {
         boolean s = false;
         Telephone telSup = obtenirIemeTelephone(ieme);
         int taille = 0;
-        
+
         if(telSup != null){
             for(int i = 0; i < this.telephones.length; i++){
-                if(this.telephones[i] != telSup){
+                if(this.telephones[i] != telSup && this.telephones[i] != null){
                     taille++;
                 }
             }
             //nouveau tableau sans le ieme telephone
-            Telephone[] tabTelSup = new Telephone[taille];
-            for(int j = 0; j < this.telephones.length; j++){
+            Telephone[] tabTelSup = new Telephone[this.telephones.length];
+            for(int j = 0; j < taille; j++){
                 if(this.telephones[j] != telSup){
-                    tabTelSup[j] = this.telephones[j]; 
+                    tabTelSup[j] = this.telephones[j];
                 }
             }
+            this.telephones = tabTelSup;
+            nbrTelephones = nbrTelephones-1;
             s = true;
         }
         return s;
