@@ -47,7 +47,7 @@ public class Contact {
     @Override
     public String toString() {
         String strContact;
-        strContact = nom.toUpperCase()+", "+ prenom.substring(0,1).toUpperCase() + prenom.substring(1);
+        strContact = nom.toUpperCase()+", "+ prenom;
 
         if(this.favori){
             strContact+= " [FAVORI]\n\n";
@@ -56,17 +56,17 @@ public class Contact {
         }
 
         Telephone[] tableauTelephone = obtenirTelephone();
-        if(this.telephones.length>0){
+        if(tableauTelephone.length == 0){
+            strContact += "TELEPHONE(S) : Aucun.\n\n";
+        }else{
             strContact += "TELEPHONE(S) : \n";
             for(int i = 0; i<tableauTelephone.length; i++){
                 strContact+= (i+1)+ ". " + tableauTelephone[i]+"\n";
             }
             strContact+="\n";
-        }else{
-            strContact += "TELEPHONE(S) : Aucun.\n";
         }
         if(this.adresse==null){
-            strContact += "ADRESSE : Aucune.\n";
+            strContact += "ADRESSE : Aucune.\n\n";
         } else{
             strContact += "ADRESSE : \n" + this.adresse +"\n\n";
         }
