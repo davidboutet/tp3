@@ -532,7 +532,8 @@ public class CarnetContacts {
             }
         }
         if(tabIndex==0){
-            System.out.print("Le carnet ne contient aucun contact portant le nom : " + prenomContact.toUpperCase() + " " + nomContact.toUpperCase());
+            System.out.print("Le carnet ne contient aucun contact portant le nom : " + prenomContact.toUpperCase() + " " + nomContact.toUpperCase() + "\n");
+            pause(MSG_PAUSE);
         }else{
             for(int i = 0; i<contactTrouver.length; i++){
                 if(contactTrouver[i]!=null){
