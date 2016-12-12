@@ -533,12 +533,13 @@ public class CarnetContacts {
         }
         if(tabIndex==0){
             System.out.print("Le carnet ne contient aucun contact portant le nom : " + prenomContact.toUpperCase() + " " + nomContact.toUpperCase());
+            pause("Appuyez sur \"ENTREE\" pour continuer...");
         }else{
             for(int i = 0; i<contactTrouver.length; i++){
                 if(contactTrouver[i]!=null){
                     System.out.println(contactTrouver[i]);
                     if(contactTrouver[i].isFavori()){
-                        Contact.nbrContactsFavoris = Contact.nbrContactsFavoris -1;
+                        Contact.nbrContactsFavoris = Contact.nbrContactsFavoris--;
                     }
                     if(questionOuiNon("Voulez-vous vraiment supprimer ce contact (o/n) : ", "Erreur, repondez par (o)ui ou (n)on !")){
                         for(int z = 0; z<contacts.length; z++){
