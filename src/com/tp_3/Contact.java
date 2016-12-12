@@ -37,7 +37,7 @@ public class Contact {
 
         if(tel != null){
             this.telephones[0] = tel;
-            this.nbrTelephones = this.nbrTelephones+1;
+            this.nbrTelephones++;
         }
         if(!isNullorEmpty(courriel)){
             this.courriel = courriel;
@@ -174,7 +174,11 @@ public class Contact {
     }
     public void setFavori(Boolean favori){
         this.favori = favori;
-        this.nbrContactsFavoris = this.nbrContactsFavoris+1;
+        if(favori){
+            this.nbrContactsFavoris++;
+        }else{
+            this.nbrContactsFavoris--;
+        }
     }
 
     /**
@@ -190,10 +194,10 @@ public class Contact {
             for (int i = 0; i < this.telephones.length; i++) {
                 if(this.telephones[i]==null && !hasBeenAdd){
                     this.telephones[i] = tel;
+                    this.nbrTelephones++;
                     hasBeenAdd = true;
                 }
             }
-            nbrTelephones++;
         }
     }
 
@@ -216,6 +220,7 @@ public class Contact {
         Telephone t = null;
         ieme = ieme-1;
         if(this.telephones.length>0 && ieme>=0 && ieme <= this.telephones.length-1){
+
             int numOfElements = 0;
             for (int i=0; i<this.telephones.length; i++)
                 if (this.telephones[i] != null)
@@ -223,11 +228,13 @@ public class Contact {
 
             //new array of non null elements
             Telephone[] myNewArray = new Telephone[numOfElements];
-            for (int i=0,j=0; i<this.telephones.length; i++)
-                if (this.telephones[i] != null)
+            for (int i=0,j=0; i<this.telephones.length; i++) {
+                if (this.telephones[i] != null) {
                     myNewArray[j++] = this.telephones[i];
+                }
+            }
 
-            if(ieme<=myNewArray.length-1){
+            if(ieme<myNewArray.length){
                 t = myNewArray[ieme];
             }
         }
@@ -253,13 +260,13 @@ public class Contact {
             }
             //nouveau tableau sans le ieme telephone
             Telephone[] tabTelSup = new Telephone[this.telephones.length];
-            for(int j = 0; j < taille; j++){
+            for(int i=0,j=0; j < this.telephones.length; j++){
                 if(this.telephones[j] != telSup){
-                    tabTelSup[j] = this.telephones[j];
+                    tabTelSup[i++] = this.telephones[j];
                 }
             }
             this.telephones = tabTelSup;
-            nbrTelephones = nbrTelephones-1;
+            this.nbrTelephones--;
             s = true;
         }
         return s;
