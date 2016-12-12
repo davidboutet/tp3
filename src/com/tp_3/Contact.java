@@ -250,15 +250,8 @@ public class Contact {
     public boolean supprimerTelephone(int ieme){
         boolean s = false;
         Telephone telSup = obtenirIemeTelephone(ieme);
-        int taille = 0;
 
         if(telSup != null){
-            for(int i = 0; i < this.telephones.length; i++){
-                if(this.telephones[i] != telSup && this.telephones[i] != null){
-                    taille++;
-                }
-            }
-            //nouveau tableau sans le ieme telephone
             Telephone[] tabTelSup = new Telephone[this.telephones.length];
             for(int i=0,j=0; j < this.telephones.length; j++){
                 if(this.telephones[j] != telSup){
@@ -308,7 +301,7 @@ public class Contact {
     }
 
     /**
-     * Cette méthode ppermet d’obtenir la valeur de l’attribut de classe nbrContactsFavoris
+     * Cette méthode permet d’obtenir la valeur de l’attribut de classe nbrContactsFavoris
      * @return le nombre de contact favoris
      */
     public static int obtenirNbrContactsFavoris(){
