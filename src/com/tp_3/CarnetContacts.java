@@ -565,7 +565,6 @@ public class CarnetContacts {
     public static boolean viderCarnet(Contact[] contacts) {
         Boolean hasBeenClear = false;
         if(questionOuiNon("Voulez-vous vraiment effacer tous les contacts (o/n) :", "Erreur, repondez par (o)ui ou (n)on !" )){
-            contacts = new Contact[] {null, null};
             Contact.nbrContactsFavoris = 0;
             hasBeenClear = true;
         }
