@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.Arrays;
 
 /**
- * A COMPLETER...
- * 
+ * Created by DavidBoutet(BOUD31109107) on 16-12-01.
+ * Created by Adrien Lombard(LOMA28049707) on 16-12-01.
  */
 public class CarnetContacts {
    
@@ -694,7 +694,7 @@ public class CarnetContacts {
                
             case "4" :
                afficherContacts(contacts, nbrContacts);
-               break;
+               break;ava
                
             case MENU_MAX :
                //Sauvegarde des contacts dans le fichier FIC_CONTACTS

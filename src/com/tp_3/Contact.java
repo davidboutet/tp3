@@ -77,101 +77,92 @@ public class Contact {
         }
         return strContact;
     }
-//***********************************************************************//
-//***********************************************************************//
-//    TOSTRING2 POUR LES TEST SEULEMENT A ENLEVER AVANT LA REMISE        //
-//***********************************************************************//
-//***********************************************************************//
-    public String toString2 (String attribut) {
-        String s = "";
-        if (attribut == null) {
-            String contact = nom + " " + prenom + " " + favori + "\n";
-            if (telephones == null) {
-                contact = contact + "erreur";
-            } else {
-                for (Telephone tel : telephones) {
-                    contact = contact + tel + "\n";
-                }
-            }
-            contact = contact + adresse;
-            contact = contact + "\n" + courriel;
 
-            s = contact.trim();
-        } else if (attribut.equals("nom")) {
-            s = nom;
-        } else if (attribut.equals("prenom")) {
-            s = prenom;
-        } else if (attribut.equals("adresse")) {
-            s = "null";
-            if (adresse != null) {
-                s = adresse.toString();
-            }
-        } else if (attribut.equals("courriel")) {
-            s = "null";
-            if (courriel != null) {
-                s = courriel;
-            }
-        } else if (attribut.equals("favori")) {
-            s = favori + "";
-        } else if (attribut.equals("nbrTelephones")) {
-            s = nbrTelephones + "";
-        } else if (attribut.equals("telephones")) {
-            if (telephones == null) {
-                s = "erreur";
-            } else {
-                s = "";
-                for (Telephone tel : telephones) {
-                    s = s + tel + "\n";
-                }
-                s = s.trim();
-            }
-        }
-        return s;
-    }
-
-
-//      getter
+//  getter
+    /**
+     * Cette méthode permet de retourner le nom du contact(String)
+     */
     public String getNom(){
         return this.nom;
     }
+    /**
+     * Cette méthode permet de retourner le prenom du contact(String)
+     */
     public String getPrenom(){
         return this.prenom;
     }
+    /**
+     * Cette méthode permet de retourner l'adresse du contact(Adresse)
+     */
     public Adresse getAdresse(){
         return this.adresse;
     }
+    /**
+     * Cette méthode permet de retourner le courriel du contact(String)
+     */
     public String getCourriel(){
         return this.courriel;
     }
+    /**
+     * Cette méthode permet de retourner le nombre de telephone du contact(int)
+     */
     public int getNbrTelephones(){
         return this.nbrTelephones;
     }
+    /**
+     * Cette méthode permet de savoir si le contact est favori(Boolean)
+     */
     public Boolean isFavori(){
         return this.favori;
     }
 
-//    setter
+//  setter
+    /**
+     * Cette méthode permet de setter le nom du contact
+     * Ne peut pas etre null ou vide
+     * @param nom
+     * @throws com.tp_3.ContactInvalideException
+     */
     public void setNom(String nom) throws ContactInvalideException{
         if(isNullorEmpty(nom)){
             throw new ContactInvalideException("Le nom ne peut être null ou vide.");
         }
         this.nom = nom;
     }
+    /**
+     * Cette méthode permet de setter le prenom du contact
+     * Ne peut pas etre null ou vide
+     * @param prenom
+     * @throws com.tp_3.ContactInvalideException
+     */
     public void setPrenom(String prenom)throws ContactInvalideException{
         if(isNullorEmpty(prenom)){
             throw new ContactInvalideException("Le prénom ne peut être null ou vide.");
         }
         this.prenom = prenom;
     }
+
+    /**
+     * Cette méthode permet de setter l'adresse du contact
+     * @param adresse de type Adresse
+     */
     public void setAdresse(Adresse adresse){
         this.adresse = adresse;
     }
+    /**
+     * Cette méthode permet de setter le courriel du contact
+     * @param courriel de type String
+     */
     public void setCourriel(String courriel){
         if(isNullorEmpty(courriel)){
             this.courriel = null;
         }
         this.courriel = courriel;
     }
+    /**
+     * Cette méthode permet de setter si le contact est favori ou non
+     * @param favori de type Boolean
+     */
     public void setFavori(Boolean favori){
         this.favori = favori;
         if(favori){
@@ -309,6 +300,11 @@ public class Contact {
     }
 
 //    private methode
+    /**
+     * Cette methode permet de verifier si un string est null ou vide
+     * @param s type String valeur a verifier
+     * @return Boolean
+     */
     private Boolean isNullorEmpty(String s){
         Boolean b = true;
         if(s != null){
@@ -316,9 +312,18 @@ public class Contact {
         }
         return b;
     }
+    /**
+     * Cette methode est un raccourci a System.out.println();
+     * @param m type Object a afficher dans un System.out.println();
+     */
     private void println(Object m){
         System.out.println(m);
     }
+
+    /**
+     * Cette methode permet d'obtenir la liste des telephones et retire les valeurs null du tableau
+     * @return un nouveau tableau de telephone excluant les valeurs null
+     */
     private Telephone[] obtenirTelephone(){
         Telephone[] myNewArray = {null};
         if(this.telephones.length>0){
@@ -337,6 +342,11 @@ public class Contact {
         return myNewArray;
     }
 
+    /**
+     * Cette methode permet de savoir si un tableau de type Telephone est plein
+     * @param tel
+     * @return retourne true si aucune case du tableau n'est egale a null
+     */
     private Boolean isArrayFull(Telephone[] tel){
         Boolean b = true;
         for (int i=0; i<=tel.length-1; i++) {
