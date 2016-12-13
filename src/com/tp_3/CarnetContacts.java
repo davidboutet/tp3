@@ -578,7 +578,7 @@ public class CarnetContacts {
         String nom;
         String prenom;
         int tailleNomPre = 0;
-        boolean tabVide = false;
+        boolean tabVide = true;
         System.out.println(boiteTitre('*', "AFFICHER LES CONTACTS"));
 
         do{
@@ -590,9 +590,9 @@ public class CarnetContacts {
                     System.out.println("\nCARNET DE CONTACTS (" + nbrContacts + ")\n\n");
 
                     if(nbrContacts == 0) {
-                        System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
+                        System.out.println("FIN DE LA LISTE DE CONTACTS.");
                         pause(MSG_PAUSE);
-                        tabVide = true;
+                        tabVide = false;
                     } else {
                         for (int i = 0; i < contacts.length; i++) {
                             if (contacts[i] != null) {
@@ -607,30 +607,26 @@ public class CarnetContacts {
                                 System.out.print(ligne('-', tailleNomPre));
                                 System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
                                 tailleNomPre = 0;
-
-                                if(contacts[i]==null){
-                                    System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
-                                    pause(MSG_PAUSE);
-                                } else {
+                                if(i < nbrContacts-1){
                                     pause(MSG_PAUSE);
                                 }
-
-                            } else {
-                                tabVide = true;
                             }
                         }
+                        tabVide = false;
+                        System.out.println("FIN DE LA LISTE DE CONTACTS.");
+                        pause(MSG_PAUSE);
                     }
                 break;
                 
                 case "2" :
                     System.out.println("\nCARNET DE CONTACTS (" + Contact.nbrContactsFavoris + ")\n\n");
                     if(Contact.nbrContactsFavoris == 0) {
-                        System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
+                        System.out.println("FIN DE LA LISTE DE CONTACTS.");
                         pause(MSG_PAUSE);
-                        tabVide = true;
+                        tabVide = false;
                     } else {
                         for(int i = 0; i < contacts.length; i++){
-                            if(contacts[i] != null && contacts[i].isFavori() == true){
+                            if(contacts[i] != null && contacts[i].isFavori()){
                                 tailleNomPre += contacts[i].getNom().length() + contacts[i].getPrenom().length() + 11;
                                 nom = contacts[i].toString().substring(0,contacts[i].toString().indexOf(','));
                                 prenom = contacts[i].toString().substring(contacts[i].toString().indexOf(',')+1,contacts[i].toString().indexOf("\n"));
@@ -639,17 +635,14 @@ public class CarnetContacts {
                                 System.out.println(ligne('-',tailleNomPre));
                                 System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
                                 tailleNomPre = 0;
-
-                                if(contacts[i]==null){
-                                    System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
-                                    pause(MSG_PAUSE);
-                                } else {
+                                if(i < Contact.nbrContactsFavoris-1){
                                     pause(MSG_PAUSE);
                                 }
-                            }else {
-                                tabVide = true;
                             }
                         }
+                        tabVide = false;
+                        System.out.println("FIN DE LA LISTE DE CONTACTS.");
+                        pause(MSG_PAUSE);
                     }
                     break;
 
