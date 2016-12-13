@@ -694,7 +694,7 @@ public class CarnetContacts {
                
             case "4" :
                afficherContacts(contacts, nbrContacts);
-               break;ava
+               break;
                
             case MENU_MAX :
                //Sauvegarde des contacts dans le fichier FIC_CONTACTS
