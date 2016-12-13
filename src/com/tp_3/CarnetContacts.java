@@ -462,9 +462,6 @@ public class CarnetContacts {
                 c.setFavori(true);
             }
 
-
-            System.out.print(contacts.length);
-            System.out.print("++++++++++++++++++++++++");
             Boolean hasBeenAdd = false;
             if(isArrayFull(contacts)){
                 contacts = ajouterLongueurTab(contacts, 2);
@@ -516,7 +513,7 @@ public class CarnetContacts {
     public static int supprimerContact(Contact[] contacts) {
         Contact [] contactTrouver = {null};
         int tabIndex = 0;
-        boiteTitre('*', "SUPPRIMER UN CONTACT");
+        System.out.println(boiteTitre('*', "SUPPRIMER UN CONTACT"));
         String nomContact = validerChaine("Nom du contact : ", "Erreur, le nom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
         String prenomContact = validerChaine("Prénom du contact : ", "Erreur, le prénom doit contenir entre 1 et 25 caracteres... Recommencez", 1, 25);
 
@@ -532,7 +529,7 @@ public class CarnetContacts {
             }
         }
         if(tabIndex==0){
-            System.out.print("Le carnet ne contient aucun contact portant le nom : " + prenomContact.toUpperCase() + " " + nomContact.toUpperCase() + "\n");
+            System.out.print("\nLe carnet ne contient aucun contact portant le nom : " + prenomContact.toUpperCase() + " " + nomContact.toUpperCase() + "\n");
             pause(MSG_PAUSE);
         }else{
             for(int i = 0; i<contactTrouver.length; i++){
@@ -583,10 +580,10 @@ public class CarnetContacts {
         int tailleNomPre = 0;
         boolean tabVide = false;
         System.out.println(boiteTitre('*', "AFFICHER LES CONTACTS"));
-        
+
         do{
-           System.out.print(SOUS_MENU_AFF_CONTACTS);
-           choix = Clavier.lireString();
+            System.out.print(SOUS_MENU_AFF_CONTACTS);
+            choix = Clavier.lireString();
 
             switch (choix) {
                 case "1" :
@@ -607,16 +604,17 @@ public class CarnetContacts {
                                 prenom = contacts[i].toString().substring(contacts[i].toString().indexOf(',') + 1, contacts[i].toString().indexOf("\n"));
                                 System.out.println(ligne('-', tailleNomPre));
                                 System.out.println(nom + "," + prenom);
-                                System.out.println(ligne('-', tailleNomPre));
+                                System.out.print(ligne('-', tailleNomPre));
                                 System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
                                 tailleNomPre = 0;
 
-                                if (contacts[i] == null) {
+                                if(contacts[i]==null){
                                     System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
                                     pause(MSG_PAUSE);
                                 } else {
                                     pause(MSG_PAUSE);
                                 }
+
                             } else {
                                 tabVide = true;
                             }
@@ -642,7 +640,7 @@ public class CarnetContacts {
                                 System.out.println(contacts[i].toString().substring(contacts[i].toString().indexOf("\n")));
                                 tailleNomPre = 0;
 
-                                if(contacts[i+1]==null){
+                                if(contacts[i]==null){
                                     System.out.println("FIN DE LA LISTE DE CONTACTS.\n");
                                     pause(MSG_PAUSE);
                                 } else {
@@ -660,7 +658,7 @@ public class CarnetContacts {
                             + "2... Recommencez.\n");
             }
 
-        }while(!tabVide);
+        }while(tabVide);
     }
    /**
     * Point d'entree de l'application de gestion d'un carnet de contacts 
